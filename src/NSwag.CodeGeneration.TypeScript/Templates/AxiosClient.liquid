@@ -73,11 +73,15 @@
 {%     else -%}
         return this.instance.request(options_).catch((_error: any) => {
 {%     endif -%}
+{%     if UseTransformAxiosError -%}
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             } else {
                 throw _error;
             }
+{%     else -%}
+            throw _error;
+{%     endif -%}
         }).then((_response: AxiosResponse) => {
 {%     if UseTransformResultMethod -%}
             return this.transformResult(url_, _response, (_response: AxiosResponse) => this.process{{ operation.ActualOperationNameUpper }}(_response));
